@@ -25,3 +25,5 @@ class Comment(models.Model):                                               #whic
     post = models.ForeignKey(Post)
     comment_text = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea rows="3" cols="150" name="title"></textarea>
+        <textarea rows="20" cols="150" name="content"></textarea>
+        <p>Img file</p>
+        <input name="img" type="file" >
+        <p>Is Published</p>
+        <input name="is_published" type="checkbox" value="True">
+        <input type="submit">
+
+
+
+
+
+    </form>
+</body>
+</html>
