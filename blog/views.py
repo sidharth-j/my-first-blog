@@ -23,12 +23,19 @@ def home(request):
     return render(request,template,context)
 
 def post_detail(request, id):
-    template = "blog/post.html"
+    if request.method == "POST":
+        comment = request.POST['comment']
+        user = User.objects.get(username=request.user.username)
+        c = Comment(comment_text=comment, post_id=id, user=user)
+        c.save()
+        return redirect("post", id)
+    else:
+        template = "blog/post.html"
 
-    post = Post.objects.get(id=int(id))
-    comment = Comment.objects.filter(post=post)
-    context= {'post': post, 'comment': comment}
-    return render(request, template, context)
+        post = Post.objects.get(id=int(id))
+        comment = Comment.objects.filter(post=post)
+        context= {'post': post, 'comment': comment}
+        return render(request, template, context)
 
 
 
@@ -75,17 +82,48 @@ def delete_post(request, id):
             return redirect('home')
         raise PermissionDenied
 
+def del_com(request, postno, comno):
+    post = Post.objects.get(id=int(postno))
+    if request.user.username != post.user.username:
+        raise PermissionDenied
+    com = Comment.objects.get(id=int(comno))
+    com.delete()
+    return redirect('post', post.id)
 
 
 
-#using class
-class AddPost(generic.CreateView):
-    model=Post
-    template = 'blog/add_post.html'
-    fields = ['title','content','img','is_published','user']
 
-class AddPost(generic.CreateView):
-    model = Post
-    template = 'blog/post_edit.html'
-    fields = ['title', 'content', 'img', 'is_published', 'user']
-    success_url = '/blog'
+
+
+def signup(request):
+    template = 'registration/signup.html'
+    context = {}
+
+    if request.method == 'POST':
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        email = request.POST['email']
+        username = request.POST['username']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if len(User.objects.filter(email=email)) != 0:
+            context['errors'] = "E-mail is already taken"
+            return redirect(request, template, context)
+
+        if len(User.objects.filter(username=username)) != 0:
+            context['errors'] = "E-mail is already taken"
+            return redirect(request, template, context)
+
+        if password1 == password2:
+            user = User(first_name=firstname, last_name=lastname, email=email, username=username)
+            user.set_password(password1)
+            user.save()
+        return redirect('login')
+
+    return render(request, template, context)
+
+
+
+
+
