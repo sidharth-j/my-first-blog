@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+{% load static  %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="{% static 'blog/css/add_post.css' %}" rel="stylesheet">
 </head>
 <body>
-
+    <div id ="div1">
         <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <textarea rows="3" cols="150" name="title"></textarea>
@@ -16,10 +18,7 @@
         <input name="is_published" type="checkbox" value="True">
         <input type="submit">
 
-
-
-
-
-    </form>
+        </form>
+    </div>
 </body>
 </html>

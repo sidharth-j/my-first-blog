@@ -27,8 +27,9 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls')),
     url(r'^accounts/',include('django.contrib.auth.urls')),
     url(r'^accounts/signup/$', signup, name="signup"),
+    url(r'^music/', include('music.urls')),
 
-    ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 
